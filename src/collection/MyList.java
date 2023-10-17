@@ -7,12 +7,12 @@ public class MyList {
     public static void main(String[] args) {
         ArrayList<String> list = new ArrayList<>();
 
-        list.add("寮犱笁");
-        list.add("寮犱笁");
-        list.add("鏉庡洓");
-        list.add("鏉庡洓");
-        list.add("鐜嬩簲");
-        list.add("鐜嬩簲");
+        list.add("张三");
+        list.add("张三");
+        list.add("李四");
+        list.add("李四");
+        list.add("王五");
+        list.add("王五");
         System.out.println(list.toString());
 
         String s = list.get(0);

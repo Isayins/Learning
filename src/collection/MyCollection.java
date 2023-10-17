@@ -6,17 +6,17 @@ import java.util.Iterator;
 public class MyCollection {
     public static void main(String[] args) {
         ArrayList<String> collection = new ArrayList<>();
-        String[] strs = new String[]{"寮犱笁","鏉庡洓","鐜嬩簲"};
+        String[] strs = new String[]{"张三","李四","王五"};
         System.out.println(strs);
 
-        collection.add("寮犱笁");
-        collection.add("寮犱笁");
-        collection.add("鏉庡洓");
-        collection.add("鏉庡洓");
-        collection.add("鐜嬩簲");
-        collection.add("鐜嬩簲");
+        collection.add("张三");
+        collection.add("张三");
+        collection.add("李四");
+        collection.add("李四");
+        collection.add("王五");
+        collection.add("王五");
         System.out.println(collection.toString());
-        collection.remove("寮犱笁");
+        collection.remove("张三");
         System.out.println(collection.toString());
 
         boolean empty = collection.isEmpty();

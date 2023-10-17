@@ -28,6 +28,7 @@ public class MyFolderCopy {
         // 获取目的文件列表
         File[] listFiles = srcFolder.listFiles();
         // 遍历目的文件列表
+
         for (File file : listFiles) {
             copyFile(file, new File(destFolder, file.getName()));
         }

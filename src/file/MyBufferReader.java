@@ -63,6 +63,7 @@ public class MyBufferReader {
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream("D:\\Recourse\\demo.txt"));
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream("D:\\Recourse\\out.txt"));
 
+
         byte[] bys = new byte[1024];
         int len;
         while ((len = bis.read(bys)) != -1) {
