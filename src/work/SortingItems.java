@@ -32,7 +32,7 @@ public class SortingItems {
         // Create ArrayLists for each day of the week
         ArrayList<ArrayList<Integer>> weeklyItems = new ArrayList<>();
         HashMap<Integer, Integer> timeStore = new HashMap<>();
-        for (int a = 1000; a < 2000; a++) {
+        for (int a = 1000; a < 1001; a++) {
             weeklyItems = generateItems(a);
             long start = System.currentTimeMillis();
             // Sorting each ArrayList using Quicksort
@@ -46,6 +46,7 @@ public class SortingItems {
             timeStore.put(a,time);
         }
     }
+// 123
 
     // Method to generate random item IDs
     private static ArrayList<ArrayList<Integer>> generateItems(int ran) {
@@ -58,6 +59,7 @@ public class SortingItems {
         dayList.add(75000);
         dayList.add(100000);
         dayList.add(500000);
+
         for (int j = 0; j < dayList.size(); j++) {
             ArrayList<Integer> items = new ArrayList<>();
             for (int i = 0; i < dayList.get(j); i++) {
