@@ -41,7 +41,7 @@ public class SortingItems1 {
         // Sorting each ArrayList using Quicksort
         for (ArrayList<Integer> items : weeklyItems) {
             quicksort(items, 0, items.size() - 1);
-//            System.out.println(items); // Printing sorted items for each day
+            System.out.println(items); // Printing sorted items for each day
         }
         long end = System.currentTimeMillis();
         System.out.println(end - start);
@@ -54,5 +54,27 @@ public class SortingItems1 {
             items.add((int) (Math.random() * 1000)); // Random integer IDs
         }
         return items;
+    }
+
+    // Method to generate random item IDs
+    private static ArrayList<ArrayList<Integer>> generateSortedItems(int ran) {
+        ArrayList<ArrayList<Integer>> itemsLists = new ArrayList<>();
+        ArrayList<Integer> dayList = new ArrayList<>();
+        dayList.add(1000);
+        dayList.add(5000);
+        dayList.add(10000);
+        dayList.add(50000);
+        dayList.add(75000);
+        dayList.add(100000);
+        dayList.add(500000);
+
+        for (int j = 0; j < dayList.size(); j++) {
+            ArrayList<Integer> items = new ArrayList<>();
+            for (int i = 0; i < dayList.get(j); i++) {
+                items.add((int) (Math.random() * ran)); // Random integer IDs
+            }
+            itemsLists.add(items);
+        }
+        return itemsLists;
     }
 }
