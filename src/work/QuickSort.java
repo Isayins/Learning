@@ -1,11 +1,15 @@
 package work;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Random;
 
 public class QuickSort {
-    private static final int ID_NUMS = 10000;
+    private static final int ID_NUMS = 500000;
 
     // Quicksort algorithm
     public static void quicksort(ArrayList<Integer> items, int low, int high) {
@@ -29,34 +33,76 @@ public class QuickSort {
         return i + 1;
     }
 
-    public static void main(String[] args) {
-        ArrayList<ArrayList<Integer>> weeklyItems = new ArrayList<>();
-        weeklyItems = generateRandomItems(ID_NUMS);
-        for (int i = 0; i < weeklyItems.size(); i++) {
-            System.out.println("day" + (i + 1) + weeklyItems.get(i).subList(0, 999));
-        }
 
-        long start = System.currentTimeMillis();
-        // Sorting each ArrayList using Quicksort
-        int temp = 1;
-        for (ArrayList<Integer> items : weeklyItems) {
-            quicksort(items, 0, items.size() - 1);
-            System.out.println("Sorted day" + temp + items.subList(0, 999)); // Printing sorted items for each day
-            temp++;
+    // Write list to CSV file
+    private static void writeListToCSV(ArrayList<Integer> list, BufferedWriter writer, String note) throws IOException {
+        writer.write(note +'[');
+        for (int i = 0; i < list.size(); i++) {
+            writer.write(list.get(i).toString());
+            if (i < list.size() - 1) {
+                writer.write(", ");
+            }
         }
-        long end = System.currentTimeMillis();
-        System.out.println("quickSortTime" + (end - start) + "s");
+        writer.write(']');
+        writer.newLine();
     }
+
+    public static void main(String[] args) {
+        String unsortedFilePath = "unsorted_data.csv";
+        String sortedFilePath = "sorted_data.csv";
+        ArrayList<ArrayList<Integer>> weeklyItems = generateRandomItems(ID_NUMS);
+
+        try (BufferedWriter unsortedWriter = new BufferedWriter(new FileWriter(unsortedFilePath));
+             BufferedWriter sortedWriter = new BufferedWriter(new FileWriter(sortedFilePath))) {
+
+            int day = 1;
+            for (ArrayList<Integer> items : weeklyItems) {
+                // Write unsorted list to CSV
+                writeListToCSV(items, unsortedWriter, "Day " + day + " unsorted: ");
+                // Terminal output for unsorted items
+                System.out.println("Day " + day + " - Unsorted (first 1000 items): ");
+                System.out.println(items.subList(0, Math.min(1000, items.size())));
+
+
+                // Sort the list
+                quicksort(items, 0, items.size() - 1);
+
+                // Terminal output for sorted items
+                System.out.println("Day " + day + " - Sorted (first 1000 items): ");
+                System.out.println(items.subList(0, Math.min(1000, items.size())));
+
+                // Write sorted list to CSV
+                writeListToCSV(items, sortedWriter, "Day " + day + " sorted: ");
+
+                // Reverse the sorted list
+                Collections.reverse(items);
+
+                // Terminal output for reverse sorted items
+                System.out.println("Day " + day + " - Reverse Sorted (first 1000 items): ");
+                System.out.println(items.subList(0, Math.min(1000, items.size())));
+
+                // Write reverse sorted list to CSV
+                writeListToCSV(items, sortedWriter, "Day " + day + " reverse sorted: ");
+
+                day++;
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+            e.printStackTrace();
+        }
+    }
+
 
     // Method to generate random item IDs
     private static ArrayList<ArrayList<Integer>> generateRandomItems(int ran) {
         ArrayList<ArrayList<Integer>> itemsLists = new ArrayList<>();
-        ArrayList<Integer> dayList = new ArrayList<>();
-        Collections.addAll(dayList, 1000, 5000, 10000, 50000, 75000, 100000, 500000);
-        for (int j = 0; j < dayList.size(); j++) {
+        ArrayList<Integer> dayList = new ArrayList<>(Arrays.asList(1000, 5000, 10000, 50000, 75000, 100000, 500000));
+        Random rand = new Random();
+
+        for (int numItems : dayList) {
             ArrayList<Integer> items = new ArrayList<>();
-            for (int i = 1; i < dayList.get(j); i++) {
-                items.add((int) (Math.random() * ran + 1)); // Random integer IDs
+            for (int i = 0; i < numItems; i++) {
+                items.add(rand.nextInt(ran) + 1); // Generate random integers from 1 to maxId
             }
             itemsLists.add(items);
         }
