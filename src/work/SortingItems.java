@@ -1,10 +1,24 @@
 package work;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
 public class SortingItems {
+
+    public static void writeListToCSV(ArrayList<Integer> list, String filePath,String note) {
+        try (BufferedWriter bfr = new BufferedWriter(new FileWriter(filePath,true))) {
+            bfr.write(note +'[');
+            for (int item : list) {
+                bfr.write(String.valueOf(item)+',');
+            }
+            bfr.write(']');
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+            e.printStackTrace();
+        }
+    }
 
     // Quicksort algorithm
     public static void quicksort(ArrayList<Integer> items, int low, int high) {
@@ -15,7 +29,7 @@ public class SortingItems {
         }
     }
 
-    private static  int partition(ArrayList<Integer> items, int low, int high) {
+    private static int partition(ArrayList<Integer> items, int low, int high) {
         int pivot = items.get(high);
         int i = low - 1;
         for (int j = low; j < high; j++) {
@@ -29,59 +43,64 @@ public class SortingItems {
     }
 
 
-
-
-
-    public  void BubbleSort(ArrayList<Integer> items, int low, int high){
-        for (int i = low ;i<high;i++){
-            for (int j = i;j<high;j++){
-                if (items.get(j)>items.get(j+1))
-                    Collections.swap(items,i,j);
+    public void BubbleSort(ArrayList<Integer> items, int low, int high) {
+        for (int i = low; i < high; i++) {
+            for (int j = i; j < high; j++) {
+                if (items.get(j) > items.get(j + 1))
+                    Collections.swap(items, i, j);
             }
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         // Create ArrayLists for each day of the week
         ArrayList<ArrayList<Integer>> weeklyItems = new ArrayList<>();
         HashMap<Integer, Integer> timeStore = new HashMap<>();
-        for (int a = 1000; a < 1001; a++) {
+
+        for (int a = 100000; a < 100001; a++) {
             // random items
-//            weeklyItems = generateItems(a);
+            weeklyItems = generateRandomItems(a);
             // sortedItems
 //            weeklyItems = generateSortedItems(a);
             // generate reversed item IDs
 //            weeklyItems = generateReversedItems(a);
+            String filepath = "data.csv";
+            for (int i = 0; i < weeklyItems.size(); i++) {
+                writeListToCSV(weeklyItems.get(i),filepath,"day" + (i + 1));
+                System.out.println("day" + (i + 1) + weeklyItems.get(i).subList(0,999));
+            }
+
             long start = System.currentTimeMillis();
             // Sorting each ArrayList using Quicksort
+            int temp = 1;
             for (ArrayList<Integer> items : weeklyItems) {
-                quicksort(items, 0, items.size() - 1);
-                System.out.println(items); // Printing sorted items for each day
+                // quicksort
+//                quicksort(items, 0, items.size() - 1);
+//                new mixedQuicksort().mixedSort(items);
+//                new MixedSorts().MixedSort1(items,0,items.size() - 1);
+                writeListToCSV(items,filepath,"Sorted day" + temp);
+                System.out.println("Sorted day" + temp + items.subList(0,999)); // Printing sorted items for each day
+//                PrintStream out = System.out;
+//                System.out.println(out);
+                temp++;
             }
             long end = System.currentTimeMillis();
             Integer time = Integer.valueOf(String.valueOf(end - start));
-            System.out.println(end - start);
-            timeStore.put(a,time);
+            System.out.println("quickSortTime" + (end - start) + "s");
+            timeStore.put(a, time);
         }
     }
 // 1231
 
     // Method to generate random item IDs
-    private static ArrayList<ArrayList<Integer>> generateItems(int ran) {
+    private static ArrayList<ArrayList<Integer>> generateRandomItems(int ran) {
         ArrayList<ArrayList<Integer>> itemsLists = new ArrayList<>();
         ArrayList<Integer> dayList = new ArrayList<>();
-        dayList.add(1000);
-        dayList.add(5000);
-        dayList.add(10000);
-        dayList.add(50000);
-        dayList.add(75000);
-        dayList.add(100000);
-        dayList.add(500000);
-        ran++;
+        Collections.addAll(dayList, 1000, 5000, 10000, 50000, 75000, 100000, 500000);
         for (int j = 0; j < dayList.size(); j++) {
             ArrayList<Integer> items = new ArrayList<>();
             for (int i = 1; i < dayList.get(j); i++) {
-                items.add((int) (Math.random() * ran)); // Random integer IDs
+                items.add((int) (Math.random() * ran+1)); // Random integer IDs
             }
             itemsLists.add(items);
         }
@@ -92,18 +111,17 @@ public class SortingItems {
     private static ArrayList<ArrayList<Integer>> generateSortedItems(int ran) {
         ArrayList<ArrayList<Integer>> itemsLists = new ArrayList<>();
         ArrayList<Integer> dayList = new ArrayList<>();
-        dayList.add(1000);
-        dayList.add(5000);
-        dayList.add(10000);
-        dayList.add(50000);
-        dayList.add(75000);
-        dayList.add(100000);
-        dayList.add(500000);
+        Collections.addAll(dayList, 1000, 5000, 10000, 50000, 75000, 100000, 500000);
 
         for (int j = 0; j < dayList.size(); j++) {
             ArrayList<Integer> items = new ArrayList<>();
-            for (int i = 0; i < dayList.get(j)/ran; i++) {
-                for (int l = 1;l<= ran;l++)
+            int numberOfIterations = dayList.get(j) / ran;
+            if (numberOfIterations == 0) {
+                for (int l = 1; l <= dayList.get(j); l++)
+                    items.add(l); // Random integer IDs, If ran is greater than the value in dayList, set to 1.
+            }
+            for (int i = 0; i < numberOfIterations; i++) {
+                for (int l = 1; l <= ran; l++)
                     items.add(l); // Random integer IDs
             }
             itemsLists.add(items);
@@ -112,21 +130,21 @@ public class SortingItems {
     }
 
     // Method to generate reversed item IDs
-    private  ArrayList<ArrayList<Integer>> generateReversedItems(int ran) {
+    private static ArrayList<ArrayList<Integer>> generateReversedItems(int ran) {
         ArrayList<ArrayList<Integer>> itemsLists = new ArrayList<>();
         ArrayList<Integer> dayList = new ArrayList<>();
-        dayList.add(1000);
-        dayList.add(5000);
-        dayList.add(10000);
-        dayList.add(50000);
-        dayList.add(75000);
-        dayList.add(100000);
-        dayList.add(500000);
+        Collections.addAll(dayList, 1000, 5000, 10000, 50000, 75000, 100000, 500000);
+
 
         for (int j = 0; j < dayList.size(); j++) {
             ArrayList<Integer> items = new ArrayList<>();
-            for (int i = 0; i < dayList.get(j)/ran; i++) {
-                for (int l = ran;l>=1 ;l--)
+            int numberOfIterations = dayList.get(j) / ran;
+            if (numberOfIterations == 0) {
+                for (int l = dayList.get(j); l >= 1; l--)
+                    items.add(l); // Random integer IDs, If ran is greater than the value in dayList, set to 1.
+            }
+            for (int i = 0; i < numberOfIterations; i++) {
+                for (int l = ran; l >= 1; l--)
                     items.add(l); // Random integer IDs
             }
             itemsLists.add(items);
@@ -135,79 +153,5 @@ public class SortingItems {
     }
 
 }
-class mixedQuicksort {
-    public  ArrayList<Integer> mixedSort(ArrayList<Integer> arr){
-        int max=arr.size()-1;
-        quickSort1(arr,0,max);
-        return arr;
-    }
-    /**
-     * 快速排序法
-     * @param arr     排序数组
-     * @param minIndex    开始下标
-     * @param maxIndex    结束下标
-     */
-    public   void quickSort1(ArrayList<Integer> arr,int minIndex,int maxIndex){
-        //假设第一个为key;
-        int key=arr.get(maxIndex);
-        int i=minIndex;
-        int j=maxIndex;
-        do{
-            while(arr.get(j)>=key&&j>i){
-                j--;
-            }
-            while(arr.get(i)<=key&&j>i){
-                i++;
-            }
-            //位置替换
-            Collections.swap(arr,i,j);
-        }while(i!=j);
-        //以i为分界点。
-        // todo
-        arr.set(minIndex,arr.get(j));
-        arr.set(i,key);
 
 
-        //如果未排序部分的的数量大于8，采用快速排序，否则采用冒泡。
-        if(i-minIndex>8){
-            quickSort1(arr,minIndex,i-1);
-        }else{
-            bubbleSort(arr,minIndex,i-1);
-        }
-        if(maxIndex-i>8){
-            quickSort1(arr,i+1,maxIndex);
-        }else{
-            bubbleSort(arr,i+1,maxIndex);
-        }
-    }
-
-    /**
-     * 冒泡排序
-     * @param arr     排序数组
-     * @param minIndex    开始下标
-     * @param maxIndex    结束下标
-     */
-    public  void bubbleSort(ArrayList<Integer> arr ,int minIndex,int maxIndex){
-
-        //System.out.println("冒泡min="+minIndex+",max="+maxIndex);
-        //System.out.println(Arrays.toString(arr));
-        boolean flag=true;//元素是否交换标记
-        int temp=0;
-        int t=0;
-        for(int i=minIndex;i<maxIndex;i++){
-            flag=true;
-            for(int j=minIndex;j<maxIndex-t;j++){
-                //System.out.println(arr[j]+":"+arr[j+1]);
-                if(arr.get(j)>arr.get(j+1)){
-                    //System.out.println("--------------");
-                   Collections.swap(arr,j,j+1);
-                    flag=false;
-                }
-            }
-            if(flag){
-                break;
-            }
-            t++;
-        }
-        //System.out.println(Arrays.toString(arr));
-    }}
