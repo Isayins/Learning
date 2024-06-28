@@ -23,7 +23,7 @@ public class BouncingBalls extends JPanel {
     private static final int HEIGHT = 600;
     private static final int BALL_SIZE_LARGE = 12;
     private static final int BALL_SIZE_SMALL = 7;
-    private static final int NUM_BALLS = 1;
+    private static final int NUM_BALLS = 10;
     private static final Color paleRed = new Color(255,150,150);
     private static final Color paleBlue = new Color(150,150,255);
 
@@ -159,7 +159,7 @@ public class BouncingBalls extends JPanel {
                 //(this does not happen immediately - it tells the main thread to call paintComponent when it next can)
                 repaint();
 
-                //Sleep for 20 milliseconds before we move the ball again
+                //Sleep for 20 milliseconds before we move the ball again.
                 try {
                     Thread.sleep(20);
                 } catch (InterruptedException e) {
