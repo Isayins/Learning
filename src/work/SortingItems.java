@@ -15,7 +15,7 @@ public class SortingItems {
         }
     }
 
-    private static int partition(ArrayList<Integer> items, int low, int high) {
+    private static  int partition(ArrayList<Integer> items, int low, int high) {
         int pivot = items.get(high);
         int i = low - 1;
         for (int j = low; j < high; j++) {
@@ -28,13 +28,11 @@ public class SortingItems {
         return i + 1;
     }
 
-    private static void mixedQuicksort(ArrayList<Integer> items, int low, int high,int temp){
-//        if (items.size()> temp)
-//            quicksort(low);
 
-    }
 
-    public static void BubbleSort(ArrayList<Integer> items, int low, int high){
+
+
+    public  void BubbleSort(ArrayList<Integer> items, int low, int high){
         for (int i = low ;i<high;i++){
             for (int j = i;j<high;j++){
                 if (items.get(j)>items.get(j+1))
@@ -114,7 +112,7 @@ public class SortingItems {
     }
 
     // Method to generate reversed item IDs
-    private static ArrayList<ArrayList<Integer>> generateReversedItems(int ran) {
+    private  ArrayList<ArrayList<Integer>> generateReversedItems(int ran) {
         ArrayList<ArrayList<Integer>> itemsLists = new ArrayList<>();
         ArrayList<Integer> dayList = new ArrayList<>();
         dayList.add(1000);
@@ -137,3 +135,79 @@ public class SortingItems {
     }
 
 }
+class mixedQuicksort {
+    public  ArrayList<Integer> mixedSort(ArrayList<Integer> arr){
+        int max=arr.size()-1;
+        quickSort1(arr,0,max);
+        return arr;
+    }
+    /**
+     * 快速排序法
+     * @param arr     排序数组
+     * @param minIndex    开始下标
+     * @param maxIndex    结束下标
+     */
+    public   void quickSort1(ArrayList<Integer> arr,int minIndex,int maxIndex){
+        //假设第一个为key;
+        int key=arr.get(maxIndex);
+        int i=minIndex;
+        int j=maxIndex;
+        do{
+            while(arr.get(j)>=key&&j>i){
+                j--;
+            }
+            while(arr.get(i)<=key&&j>i){
+                i++;
+            }
+            //位置替换
+            Collections.swap(arr,i,j);
+        }while(i!=j);
+        //以i为分界点。
+        // todo
+        arr.set(minIndex,arr.get(j));
+        arr.set(i,key);
+
+
+        //如果未排序部分的的数量大于8，采用快速排序，否则采用冒泡。
+        if(i-minIndex>8){
+            quickSort1(arr,minIndex,i-1);
+        }else{
+            bubbleSort(arr,minIndex,i-1);
+        }
+        if(maxIndex-i>8){
+            quickSort1(arr,i+1,maxIndex);
+        }else{
+            bubbleSort(arr,i+1,maxIndex);
+        }
+    }
+
+    /**
+     * 冒泡排序
+     * @param arr     排序数组
+     * @param minIndex    开始下标
+     * @param maxIndex    结束下标
+     */
+    public  void bubbleSort(ArrayList<Integer> arr ,int minIndex,int maxIndex){
+
+        //System.out.println("冒泡min="+minIndex+",max="+maxIndex);
+        //System.out.println(Arrays.toString(arr));
+        boolean flag=true;//元素是否交换标记
+        int temp=0;
+        int t=0;
+        for(int i=minIndex;i<maxIndex;i++){
+            flag=true;
+            for(int j=minIndex;j<maxIndex-t;j++){
+                //System.out.println(arr[j]+":"+arr[j+1]);
+                if(arr.get(j)>arr.get(j+1)){
+                    //System.out.println("--------------");
+                   Collections.swap(arr,j,j+1);
+                    flag=false;
+                }
+            }
+            if(flag){
+                break;
+            }
+            t++;
+        }
+        //System.out.println(Arrays.toString(arr));
+    }}
