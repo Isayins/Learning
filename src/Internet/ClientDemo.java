@@ -11,7 +11,7 @@ import java.net.Socket;
 public class ClientDemo {
     public static void main(String[] args) throws IOException {
         // 创建客户端Socket对象
-        Socket s = new Socket("10.1.15.171", 10086);
+        Socket s = new Socket("10.1.19.121", 10086);
         // 封装文本文件的数据
         BufferedReader br = new BufferedReader(new FileReader("src\\internet\\ClientDemo.java"));
         // 封装输出流写出数据
